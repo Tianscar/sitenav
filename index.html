@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
     <title>碳酸天剑的网址导航</title>
-    <!-- MDB icon -->
+    <!-- Icon -->
     <link rel="icon" href="img/favicon.ico" type="image/x-icon" />
     <!-- MDB -->
     <link rel="stylesheet" href="css/mdb.min.css" />
@@ -16,13 +16,29 @@
     </style>
   </head>
 <body>
-  
+
 <div class="container my-4">
   <div class="text-center">
     <p class="subheader"><b>碳酸天剑的网址导航</b></p>
     <p class="subtitle">#include "tianscar/sitenav.h"</p>
-    <hr class="my-1" />
   </div>
+
+  <section class="text-center">
+    <form id="search">
+      <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="输入你想搜索的内容......" name="text">
+          <div class="input-group-append">
+            <button title="使用 Bing 搜索" class="btn mx-2 p-0 bg-transparent" type="submit" onclick="bingClick()"><img src="img/bing.ico" width="32" height="32"></button>
+            <button title="使用 Duckduckgo 搜索" class="btn p-0 bg-transparent" type="submit" onclick="ddgClick()"><img src="img/ddg.ico" width="32" height="32"></button>
+            <button title="使用 Google 搜索" class="btn mx-2 p-0 bg-transparent" type="submit" onclick="googleClick()"><img src="img/google.ico" width="32" height="32"></button>
+            <button title="百度一下，你就知道" class="btn p-0 bg-transparent" type="submit" onclick="baiduClick()"><img src="img/baidu.ico" width="32" height="32"></button>
+          </div>
+      </div>
+    </form>
+  </section>
+
+  <hr class="my-1" />
+
   <section class="text-center">
     <p class="title mb-1">碳酸和 TA 的朋友们</p>
     <div class="row px-2">
@@ -949,6 +965,44 @@
     <p>由 <a href="https://getbootstrap.com"><u>Bootstrap</u></a> & <a href="https://mdbootstrap.com/freebies/fluent-design"><u>bootstrap-fluent-design</u></a> 强力驱动</p>
   </div>
 </div>
+
+  <script>
+    Object.defineProperty(HTMLFormElement.prototype, 'formdata', { get() { return new FormData(this); } } )
+    function doFormRequest(url, action, json) {
+        var form = document.createElement("form");
+        form.target = "_blank";
+        form.action = url;
+        form.method = action;
+        for (var key in json) {
+            if (json.hasOwnProperty(key)) {
+              var val = json[key];
+              input = document.createElement("input");
+              input.type = "hidden";
+              input.name = key;
+              input.value = val;
+              form.appendChild(input)
+            }
+        }
+        document.body.appendChild(form);
+        form.submit();
+        document.body.removeChild(form);
+    }
+    function bingClick() {
+      doFormRequest("https://www.bing.com/search", "GET", {'q': search.formdata.get('text')});
+    }
+    function ddgClick() {
+      doFormRequest("https://duckduckgo.com/", "GET", {'q': search.formdata.get('text')});
+    }
+    function googleClick() {
+      doFormRequest("https://www.google.com/search", "GET", {'q': search.formdata.get('text')});
+    }
+    function baiduClick() {
+      doFormRequest("https://www.baidu.com/s", "GET", {'wd': search.formdata.get('text')});
+    }
+    search.addEventListener("submit", (ev) => {
+      ev.preventDefault();
+    })
+  </script>
 
 </body>
 </html>
